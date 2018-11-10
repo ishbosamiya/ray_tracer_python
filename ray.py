@@ -14,3 +14,16 @@ class Ray:
 		return self.direction
 	def pointAtParameter(self, t):
 		return self.origin + t * self.direction
+
+v1 = Vec3(1, 2, 3)
+v2 = Vec3(4, 5, 6)
+print(v1.normalized())
+print(v2.normalized())
+print(v1.length())
+print(v2.length())
+print(v1.dot(v2))
+print(v1.cross(v2))
+print(v1 + v2)
+print(v1 - v2)
+print(v1 * 5)
+print(v1 / 5)
