@@ -15,10 +15,8 @@ class Ray:
 	def pointAtParameter(self, t):
 		return self.origin + t * self.direction
 
-<<<<<<< HEAD
 r = Ray(Vec3(0, 1, 5), Vec3(1,2,3))
 print(r)
-=======
 v1 = Vec3(1, 2, 3)
 v2 = Vec3(4, 5, 6)
 print(v1.normalized())
@@ -31,4 +29,3 @@ print(v1 + v2)
 print(v1 - v2)
 print(v1 * 5)
 print(v1 / 5)
->>>>>>> origin/master
