@@ -14,3 +14,6 @@ class Ray:
 		return self.direction
 	def pointAtParameter(self, t):
 		return self.origin + t * self.direction
+
+r = Ray(Vec3(0, 1, 5), Vec3(1,2,3))
+print(r)
