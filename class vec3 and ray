@@ -1,0 +1,38 @@
+class Vec3:
+    def __init__(self,x1=0,y1=0,z1=0):
+        self.x1=x1
+        self.y1=y1
+        self.z1=z1
+    def dotprod(self,x2,y2,z2):
+        self.x2=x2
+        self.y2=y2
+        self.z2=z2
+        return((self.x1 * self.x2) + (self.y1 * self.y2) + (self.z1 * self.z2))
+    def crossprod(self,x3,y3,z3):
+        self.x3=x3
+        self.y3=y3
+        self.z3=z3
+        self.x= (self.y1 * self.z3) - (self.y3 * self.y1)
+        self.y= (self.x3 * self.z1) - (self.z3 * self.x1)
+        self.z= (self.x1 * self.y3) - (self.y1 * self.x3)
+        return(self.x,'i+',self.y,'j+',self.z,'k')
+    def length(self):
+        self.l=((self.x1)**2 + (self.y1)**2 + (self.z1)**2)**(0.5)
+        return(self.l)
+    def normalize(self):
+        return((self.x1/self.l),'i+',(self.y1/self.l),'j+',(self.z1/self.l),'k')
+
+
+class Ray:
+    def __init__(self,l,m,n,x1=0,y1=0,z1=0):
+        self.x1=x1
+        self.y1=y1
+        self.z1=z1
+        self.l=l
+        self.m=m
+        self.n=n
+        return(('x-',self.x1)/(self.l),'=',('y-',self.y1)/(self.m),'+',('z-',self.z1)/(self.n))
+    def origin(self):
+        return(self.x1,',',self.y1,',',self.z1)
+    def direction(self):
+        return('The direction ratios of the ray are: ',self.l,',',self.m,',',self.n)
