@@ -24,7 +24,7 @@ for y in range(height, 0, -1):
 		for s in range(0, no_of_samples):
 			ray = camera.getRay(x, y)
 			for sphere in spheres:
-				temp = sphere.hit(ray)
+				temp = sphere.hit(ray, 0.0, 1000.0)
 				if temp[0]:
 					colour = colour + ((temp[1].normal + Vec3(1.0, 1.0, 1.0)) / 2.0) * 255.0
 					break
