@@ -3,9 +3,11 @@ from ray import Ray
 from hit_record import Hit_Record
 from ppm_writer import ppmWriter
 from math import sqrt
+from random import random
 
 width = 300
 height = 200
+no_of_samples = 10
 
 class Sphere:
 	def __init__(self, center = Vec3(0, 0, 0), radius = 0):
@@ -39,18 +41,19 @@ vertical = Vec3(0.0, 2.0, 0.0)
 
 for y in range(height, 0, -1):
 	for x in range(0, width):
-		u = float(x / width)
-		v = float(y / height)
-		ray = Ray(Vec3(0.0, 0.0, 0.0), lower_left_corner + horizontal * u + vertical * v)
 		colour = Vec3(0, 0, 0)
-		for sphere in spheres:
-			temp = sphere.hit(ray)
-			if temp[0]:
-				colour = ((temp[1].normal + Vec3(1.0, 1.0, 1.0)) / 2.0) * 255.0
-				break
-			else:
-				colour = Vec3(0, 0, 0)
-		pixels.append(colour)
+		for s in range(0, no_of_samples):
+			u = float((x + random())/ width)
+			v = float((y + random())/ height)
+			ray = Ray(Vec3(0.0, 0.0, 0.0), lower_left_corner + horizontal * u + vertical * v)
+			for sphere in spheres:
+				temp = sphere.hit(ray)
+				if temp[0]:
+					colour = colour + ((temp[1].normal + Vec3(1.0, 1.0, 1.0)) / 2.0) * 255.0
+					break
+				else:
+					colour = colour + Vec3(0, 0, 0)
+		pixels.append(colour/no_of_samples)
 
 print("Actual length:", len(pixels), "Expected Length:", width * height)
 ppmWriter(pixels, "temp.ppm", width, height)
