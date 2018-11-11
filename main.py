@@ -2,6 +2,8 @@ from vec3 import Vec3
 from ray import Ray
 from hit_record import Hit_Record
 from ppm_writer import ppmWriter
+from camera import Camera
+
 from math import sqrt
 
 width = 300
@@ -32,16 +34,13 @@ class Sphere:
 pixels = []
 spheres = [Sphere(Vec3(-0.5, 0.0, 2.0), 0.5), Sphere(Vec3(0.5, 0.0, 2.0), 0.5)]
 
-aspect_ratio = float(width / height)
-lower_left_corner = Vec3(-1.0 * aspect_ratio, -1.0, 1.0)
-horizontal = Vec3(2.0 * aspect_ratio, 0.0, 0.0)
-vertical = Vec3(0.0, 2.0, 0.0)
+camera_origin = Vec3(0.0, 0.0, 0.0)
+camera_length = 1.0
+camera = Camera(width, height, camera_origin, camera_length)
 
 for y in range(height, 0, -1):
 	for x in range(0, width):
-		u = float(x / width)
-		v = float(y / height)
-		ray = Ray(Vec3(0.0, 0.0, 0.0), lower_left_corner + horizontal * u + vertical * v)
+		ray = camera.getRay(x, y)
 		colour = Vec3(0, 0, 0)
 		for sphere in spheres:
 			temp = sphere.hit(ray)
