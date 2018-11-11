@@ -6,7 +6,6 @@ from camera import Camera
 from sphere import Sphere
 
 from math import sqrt
-from random import random
 
 width = 300
 height = 200
