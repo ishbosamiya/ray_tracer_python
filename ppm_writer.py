@@ -11,6 +11,12 @@ def ppmWriter(pixels, path, width, height):
 	for y in range(0, height):
 		for x in range(0, width):
 			temp = pixels[getIndex(x, y, width)]
-			f.write(str(temp.x) + " " + str(temp.y) + " " + str(temp.z) + " ")
+			if temp.x < 0:
+				temp.x = 0
+			if temp.y < 0:
+				temp.y = 0
+			if temp.z < 0:
+				temp.z = 0
+			f.write(str(int(temp.x)) + " " + str(int(temp.y)) + " " + str(int(temp.z)) + " ")
 		f.write("\n")
 	f.close()
