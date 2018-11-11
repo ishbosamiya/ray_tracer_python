@@ -6,6 +6,8 @@ class Model:
 	tex_coords = [] # stored as list of Vec3
 	normals = [] # stored as list of Vec3 - 
 	faces = [] # stored as list of list of integers - [[v1, vt1, vn1], [v2, vt2, vn2], ..... , [vn, vtn, vnn]]
+	has_tex_coords = False
+	has_normals = False
 	def __init__(self, name = "", vertices = [], tex_coords = [], normals = [], faces = []):
 		self.name = name
 		self.vertices = vertices
@@ -13,7 +15,7 @@ class Model:
 		self.normals = normals
 		self.faces = faces
 
-	def objParse(self, path):
+	def readObj(self, path):
 		with open(path, "rt") as file:
 			for line in file:
 				if line.startswith("v "):
@@ -22,9 +24,11 @@ class Model:
 				elif line.startswith("vt "):
 					info = line.split()
 					self.tex_coords.append(Vec3(float(info[1]), float(info[2]), 0.0))
+					self.has_tex_coords = True
 				elif line.startswith("vn "):
 					info = line.split()
 					self.normals.append(Vec3(float(info[1]), float(info[2]), float(info[3])))
+					self.has_normals = True
 				elif line.startswith("f "):
 					info = line.split()
 					indices_of_vertices_of_face = []
@@ -32,7 +36,10 @@ class Model:
 						if i != "f":
 							vertex_data = []
 							for j in i.split("/"):
-								vertex_data.append(int(j))
+								if j == '':
+									vertex_data.append('')
+								else:
+									vertex_data.append(int(j) - 1)
 							indices_of_vertices_of_face.append(vertex_data)
 					self.faces.append(indices_of_vertices_of_face)
 				elif line.startswith("o"):
@@ -40,6 +47,7 @@ class Model:
 					self.name = info[1]
 				else:
 					continue
+
 	def writeObj(self, path):
 		with open(path, "wt") as file:
 			file.write("o " + self.name + "\n")
@@ -47,22 +55,52 @@ class Model:
 				file.write("v ")
 				file.write(str(i.x) + " " + str(i.y) + " " + str(i.z))
 				file.write("\n")
-			for i in self.tex_coords:
-				file.write("vt ")
-				file.write(str(i.x) + " " + str(i.y))
-				file.write("\n")
-			for i in self.normals:
-				file.write("vn ")
-				file.write(str(i.x) + " " + str(i.y) + " " + str(i.z))
-				file.write("\n")
+			if self.has_tex_coords:
+				for i in self.tex_coords:
+					file.write("vt ")
+					file.write(str(i.x) + " " + str(i.y))
+					file.write("\n")
+			if self.has_normals:
+				for i in self.normals:
+					file.write("vn ")
+					file.write(str(i.x) + " " + str(i.y) + " " + str(i.z))
+					file.write("\n")
 			for i in self.faces:
 				file.write("f ")
 				line = ""
 				for vertex_data in i:
-					line = line + str(vertex_data[0]) + "/" + str(vertex_data[1]) + "/" + str(vertex_data[2]) + " "
+					if vertex_data[0] == '':
+						line += str('') + "/"
+					else:
+						line += str(vertex_data[0] + 1) + "/"
+					if vertex_data[1] == '':
+						line += str('') + "/"
+					else:
+						line += str(vertex_data[1] + 1) + "/"
+					if vertex_data[2] == '':
+						line += str('') + "/"
+					else:
+						line += str(vertex_data[2] + 1) + " "
 				file.write(line)
 				file.write("\n")
 
+	def getFaceData(self, index, data_type = "v"):
+		if data_type == "v":
+			data = []
+			for i in self.faces[index]:
+				data.append(self.vertices[i[0]])
+			return data
+		elif data_type == "vt" and self.has_tex_coords:
+			data = []
+			for i in self.faces[index]:
+				data.append(self.tex_coords[i[1]])
+			return data
+		elif data_type == "vn" and self.has_normals:
+			data = []
+			for i in self.faces[index]:
+				data.append(self.normals[i[2]])
+			return data
+			
 model = Model()
-model.objParse("../temp_obj.obj")
+model.readObj("../temp_obj.obj")
 model.writeObj("../temp_obj_mine.obj")
