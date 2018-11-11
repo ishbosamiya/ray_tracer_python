@@ -22,7 +22,7 @@ class Sphere:
 			return True
 
 pixels = []
-sphere = Sphere(Vec3(0.0, 0.0, 2.0), 1.0)
+spheres = [Sphere(Vec3(-0.5, 0.0, 2.0), 0.5), Sphere(Vec3(0.5, 0.0, 2.0), 0.5)]
 
 aspect_ratio = float(width / height)
 lower_left_corner = Vec3(-1.0 * aspect_ratio, -1.0, 1.0)
@@ -34,9 +34,14 @@ for y in range(0, height):
 		u = float(x / width)
 		v = float(y / height)
 		ray = Ray(Vec3(0.0, 0.0, 0.0), lower_left_corner + horizontal * u + vertical * v)
-		if sphere.hit(ray):
-			pixels.append(Vec3(255, 0, 0))
-		else:
-			pixels.append(Vec3(0, 0, 0))
+		colour = Vec3(0, 0, 0)
+		for sphere in spheres:
+			if sphere.hit(ray):
+				colour = Vec3(255, 0, 0)
+				break
+			else:
+				colour = Vec3(0, 0, 0)
+		pixels.append(colour)
 
+print("Actual length:", len(pixels), "Expected Length:", width * height)
 ppmWriter(pixels, "temp.ppm", width, height)
