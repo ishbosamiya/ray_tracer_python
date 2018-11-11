@@ -16,7 +16,6 @@ class Model:
 	def objParse(self, path):
 		with open(path, "rt") as file:
 			for line in file:
-				print(line, end = "")
 				if line.startswith("v "):
 					info = line.split()
 					self.vertices.append(Vec3(float(info[1]), float(info[2]), float(info[3])))
@@ -33,7 +32,7 @@ class Model:
 						if i != "f":
 							vertex_data = []
 							for j in i.split("/"):
-								vertex_data.append(j)
+								vertex_data.append(int(j))
 							indices_of_vertices_of_face.append(vertex_data)
 					self.faces.append(indices_of_vertices_of_face)
 				elif line.startswith("o"):
@@ -66,5 +65,4 @@ class Model:
 
 model = Model()
 model.objParse("../temp_obj.obj")
-print(model.faces)
 model.writeObj("../temp_obj_mine.obj")
