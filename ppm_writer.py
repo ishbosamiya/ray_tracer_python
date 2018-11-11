@@ -14,7 +14,3 @@ def ppmWriter(pixels, path, width, height):
 			f.write(str(temp.x) + " " + str(temp.y) + " " + str(temp.z) + " ")
 		f.write("\n")
 	f.close()
-
-pixels = [Vec3(255, 0, 0), Vec3(0, 255, 0), Vec3(0, 0, 255), Vec3(255, 255, 0), Vec3(255, 255, 255), Vec3(0, 0, 0)]
-
-ppmWriter(pixels, "temp.ppm", 3, 2)
