@@ -22,10 +22,17 @@ class Sphere:
 			return True
 
 pixels = []
-sphere = Sphere(Vec3(width/2.0, height/2.0, 100.0), 50.0)
+sphere = Sphere(Vec3(0.0, 0.0, 2.0), 1.0)
+
+lower_left_corner = Vec3(-1.0, -1.0, 1.0)
+horizontal = Vec3(2.0, 0.0, 0.0)
+vertical = Vec3(0.0, 2.0, 0.0)
+
 for y in range(0, height):
 	for x in range(0, width):
-		ray = Ray(Vec3(x, y, 0), Vec3(x, y, 1))
+		u = float(x / width)
+		v = float(y / height)
+		ray = Ray(Vec3(0.0, 0.0, 0.0), lower_left_corner + horizontal * u + vertical * v)
 		if sphere.hit(ray):
 			pixels.append(Vec3(255, 0, 0))
 		else:
