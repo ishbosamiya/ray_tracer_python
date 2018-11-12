@@ -1,6 +1,10 @@
 from vec3 import Vec3
+from triangle import Triangle
+from hitable import Hitable
+from hitable_list import Hitable_List
+from material import *
 
-class Model:
+class Model(Hitable):
 	name = ""
 	vertices = [] # stored as list of Vec3
 	tex_coords = [] # stored as list of Vec3
@@ -100,7 +104,18 @@ class Model:
 			for i in self.faces[index]:
 				data.append(self.normals[i[2]])
 			return data
+
+	def hit(self, ray_in, t_min, t_max):
+		list_of_triangles = []
+		for face in self.faces:
+			vertices = self.getFaceData(self.faces.index(face))
+			for triangle_no in range(1, len(vertices) - 2):
+				list_of_triangles.append(Triangle(v = [vertices[0], vertices[triangle_no], vertices[triangle_no + 1]]))
+		hitable_list = Hitable_List(list_of_triangles)
+		return hitable_list.hit(ray_in, t_min, t_max)
 			
 model = Model()
 model.readObj("../temp_obj.obj")
 model.writeObj("../temp_obj_mine.obj")
+for i in model.getFaceData(2, "v"):
+	print(i)
