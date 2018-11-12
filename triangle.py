@@ -1,13 +1,15 @@
 from vec3 import Vec3
 from ray import Ray
-
 from hit_record import Hit_Record
+from hitable import Hitable
+from material import *
 
-class Triangle():
-	def __init__(self, v, vt = [], vn = []):
+class Triangle(Hitable):
+	def __init__(self, v, vt = [], vn = [], material = Lambert()):
 		self.v = v
 		self.vt = vt
 		self.vn = vn
+		self.material = material
 	def hit(self, ray_in, t_min, t_max):
 		hit_record = Hit_Record()
 		edge1 = self.v[1] - self.v[0]
@@ -35,6 +37,7 @@ class Triangle():
 			hit_record.point = ray_in.pointAtParameter(t)
 			hit_record.normal = n
 			hit_record.t = t
+			hit_record.material = self.material
 			return (True, hit_record)
 		else:
 			return (False, hit_record)
