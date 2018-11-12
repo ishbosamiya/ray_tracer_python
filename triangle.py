@@ -32,7 +32,7 @@ class Triangle(Hitable):
 			return (False, hit_record)
 
 		t = edge2.dot(r)
-		if t >= 0:
+		if t >= t_min and t <= t_max:
 			hit_record.ray_in = ray_in
 			hit_record.point = ray_in.pointAtParameter(t)
 			hit_record.normal = n
