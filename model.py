@@ -10,14 +10,16 @@ class Model(Hitable):
 	tex_coords = [] # stored as list of Vec3
 	normals = [] # stored as list of Vec3 - 
 	faces = [] # stored as list of list of integers - [[v1, vt1, vn1], [v2, vt2, vn2], ..... , [vn, vtn, vnn]]
+	material = Lambert()
 	has_tex_coords = False
 	has_normals = False
-	def __init__(self, name = "", vertices = [], tex_coords = [], normals = [], faces = []):
+	def __init__(self, name = "", vertices = [], tex_coords = [], normals = [], faces = [], material = Lambert()):
 		self.name = name
 		self.vertices = vertices
 		self.tex_coords = tex_coords
 		self.normals = normals
 		self.faces = faces
+		self.material = material
 
 	def readObj(self, path):
 		with open(path, "rt") as file:
@@ -110,6 +112,6 @@ class Model(Hitable):
 		for face in self.faces:
 			vertices = self.getFaceData(self.faces.index(face))
 			for triangle_no in range(0, len(vertices) - 2):
-				list_of_triangles.append(Triangle(v = [vertices[0], vertices[triangle_no + 1], vertices[triangle_no + 2]]))
+				list_of_triangles.append(Triangle(v = [vertices[0], vertices[triangle_no + 1], vertices[triangle_no + 2]], material = self.material))
 		hitable_list = Hitable_List(list_of_triangles)
 		return hitable_list.hit(ray_in, t_min, t_max)
