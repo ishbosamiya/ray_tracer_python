@@ -109,13 +109,7 @@ class Model(Hitable):
 		list_of_triangles = []
 		for face in self.faces:
 			vertices = self.getFaceData(self.faces.index(face))
-			for triangle_no in range(1, len(vertices) - 2):
-				list_of_triangles.append(Triangle(v = [vertices[0], vertices[triangle_no], vertices[triangle_no + 1]]))
+			for triangle_no in range(0, len(vertices) - 2):
+				list_of_triangles.append(Triangle(v = [vertices[0], vertices[triangle_no + 1], vertices[triangle_no + 2]]))
 		hitable_list = Hitable_List(list_of_triangles)
 		return hitable_list.hit(ray_in, t_min, t_max)
-			
-model = Model()
-model.readObj("../temp_obj.obj")
-model.writeObj("../temp_obj_mine.obj")
-for i in model.getFaceData(2, "v"):
-	print(i)

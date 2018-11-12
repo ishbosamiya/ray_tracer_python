@@ -35,15 +35,17 @@ def rayTrace(models, ray, depth):
 		colour = backgroundColour(ray)
 	return colour
 
-width = 300
-height = 200
-no_of_samples = 1
+width = 1280
+height = 720
+no_of_samples = 20
 
 pixels = []
 triangles = [Triangle(v = [Vec3(0.0, 1.0, 2.0), Vec3(1.0, -5.0, 5.0), Vec3(-1.0, -5.0, 0.0)], material = Lambert(Vec3(0.1, 0.2, 0.8)))]
 spheres = [Sphere(Vec3(0.60, 0.0, 2.0), 0.5, Lambert(Vec3(0.2, 0.9, 0.55))), Sphere(Vec3(0.5, -100.0, 2.0), 99.5, Lambert(Vec3(1.0, 1.0, 1.0))), Sphere(Vec3(-0.60, -0.2, 2.0), 0.5, Lambert(Vec3(0.89, 0.65, 0.55)))]
 hitable_list = Hitable_List(spheres + triangles)
-hitable_list = Hitable_List([Model("../temp_obj.obj")])
+model = Model()
+model.readObj("../temp_obj.obj")
+hitable_list = Hitable_List([model])
 
 camera_origin = Vec3(0.0, 0.0, -2.0)
 camera_length = 0.8
@@ -54,7 +56,7 @@ for y in range(height, 0, -1):
 		colour = Vec3(0, 0, 0)
 		for s in range(0, no_of_samples):
 			ray = camera.getRay(x, y)
-			colour = colour + rayTrace(hitable_list, ray, 5)
+			colour = colour + rayTrace(hitable_list, ray, 1)
 		pixels.append(colour/no_of_samples * 255.0)
 
 print("Actual length:", len(pixels), "Expected Length:", width * height)
