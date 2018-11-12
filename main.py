@@ -32,7 +32,7 @@ def rayTrace(models, ray, depth):
 		def reflection(incident_direction, normal):
 			return incident_direction - normal * (2 * incident_direction.dot(normal))
 		diffuse_colour = Vec3(0.8, 0.2, 0.2)
-		next_ray = Ray(temp[1].point, temp[1].normal + randomInUnitSphere())
+		next_ray = Ray(temp[1].point, (temp[1].normal + randomInUnitSphere()).normalized())
 #		next_ray = Ray(temp[1].point, reflection(ray.getDirection(), temp[1].normal))
 		colour = rayTrace(models, next_ray, depth - 1)
 		colour = Vec3(colour.x * diffuse_colour.x, colour.y * diffuse_colour.y, colour.z * diffuse_colour.z)
