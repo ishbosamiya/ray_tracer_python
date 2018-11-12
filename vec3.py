@@ -25,4 +25,7 @@ class Vec3:
 	def length(self):
 		return sqrt(self.x * self.x + self.y * self.y + self.z * self.z)
 	def normalized(self):
-		return self/self.length()
+		l = self.length()
+		if l == 0:
+			return self
+		return self/l
