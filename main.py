@@ -9,7 +9,7 @@ from math import sqrt
 
 width = 300
 height = 200
-no_of_samples = 10
+no_of_samples = 1
 
 pixels = []
 spheres = [Sphere(Vec3(-0.5, 0.0, 2.0), 0.5), Sphere(Vec3(0.5, 0.0, 2.0), 0.5)]
@@ -26,7 +26,12 @@ def getColourForPixel(models, ray):
 			colour = ((temp[1].normal + Vec3(1.0, 1.0, 1.0)) / 2.0) * 255.0
 			break
 		else:
-			colour = Vec3(0, 0, 0)
+			h = ray.getDirection().y
+			h = (h + 1.0)/2.0
+			white = Vec3(1.0, 1.0, 1.0)
+			blue = Vec3(0.47, 0.7, 1.0)
+			colour = blue * h + white * (1.0 - h)
+			colour = colour * 255.0
 	return colour
 
 for y in range(height, 0, -1):
