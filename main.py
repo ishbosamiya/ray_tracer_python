@@ -39,9 +39,9 @@ height = 200
 no_of_samples = 10
 
 pixels = []
-triangles = [Triangle(v = [Vec3(0.0, 1.0, 2.0), Vec3(1.0, -1.0, 2.0), Vec3(-1.0, -1.0, 2.0)])]
-spheres = [Sphere(Vec3(-0.60, 0.0, 2.0), 0.5, Metal(Vec3(0.89, 0.65, 0.55), 0.7)), Sphere(Vec3(0.40, 0.0, 2.0), 0.5, Metal(Vec3(0.2, 0.9, 0.55))), Sphere(Vec3(0.5, -100.0, 2.0), 99.5, Lambert(Vec3(1.0, 1.0, 1.0)))]
-hitable_list = Hitable_List(spheres)
+triangles = [Triangle(v = [Vec3(0.0, 1.0, 2.0), Vec3(1.0, -5.0, 5.0), Vec3(-1.0, -5.0, 0.0)], material = Lambert(Vec3(0.1, 0.2, 0.8)))]
+spheres = [Sphere(Vec3(0.60, 0.0, 2.0), 0.5, Lambert(Vec3(0.2, 0.9, 0.55))), Sphere(Vec3(0.5, -100.0, 2.0), 99.5, Lambert(Vec3(1.0, 1.0, 1.0))), Sphere(Vec3(-0.60, -0.2, 2.0), 0.5, Lambert(Vec3(0.89, 0.65, 0.55)))]
+hitable_list = Hitable_List(spheres + triangles)
 
 camera_origin = Vec3(0.0, 0.0, 0.0)
 camera_length = 1.0
