@@ -3,21 +3,12 @@ from ray import Ray
 from hit_record import Hit_Record
 from ppm_writer import ppmWriter
 from camera import Camera
+from hitable import Hitable
+from hitable_list import Hitable_List
 from sphere import Sphere
 
 from math import sqrt
 from random import random
-
-width = 300
-height = 200
-no_of_samples = 1
-
-pixels = []
-spheres = [Sphere(Vec3(-0.5, 0.0, 2.0), 0.5), Sphere(Vec3(0.5, 0.0, 2.0), 0.5)]
-
-camera_origin = Vec3(0.0, 0.0, 0.0)
-camera_length = 1.0
-camera = Camera(width, height, camera_origin, camera_length)
 
 def backgroundColour(ray):
 	h = ray.getDirection().y
@@ -34,24 +25,39 @@ def randomInUnitSphere():
 
 def rayTrace(models, ray, depth):
 	if depth == 0:
-		return Vec3(0.0, 0.0, 0.0)
+		return backgroundColour(ray)
 	colour = Vec3()
-	for model in models:
-		temp = model.hit(ray, 0.0001, 1000.0)
-		if temp[0]:
-			next_ray = Ray(temp[1].point, randomInUnitSphere())
-			colour = colour + rayTrace(models, next_ray, depth - 1)
-			break
-		else:
-			colour = backgroundColour(ray)
+	temp = models.hit(ray, 0.0001, 1000.0)
+	if temp[0]:
+		def reflection(incident_direction, normal):
+			return incident_direction - normal * (2 * incident_direction.dot(normal))
+		diffuse_colour = Vec3(0.8, 0.2, 0.2)
+		next_ray = Ray(temp[1].point, temp[1].normal + randomInUnitSphere())
+#		next_ray = Ray(temp[1].point, reflection(ray.getDirection(), temp[1].normal))
+		colour = rayTrace(models, next_ray, depth - 1)
+		colour = Vec3(colour.x * diffuse_colour.x, colour.y * diffuse_colour.y, colour.z * diffuse_colour.z)
+	else:
+		colour = backgroundColour(ray)
 	return colour
+
+width = 300
+height = 200
+no_of_samples = 10
+
+pixels = []
+spheres = [Sphere(Vec3(-0.60, 0.0, 2.0), 0.5), Sphere(Vec3(0.40, 0.0, 2.0), 0.5), Sphere(Vec3(0.5, -100.0, 2.0), 99.5)]
+hitable_list = Hitable_List(spheres)
+
+camera_origin = Vec3(0.0, 0.0, 0.0)
+camera_length = 1.0
+camera = Camera(width, height, camera_origin, camera_length)
 
 for y in range(height, 0, -1):
 	for x in range(0, width):
 		colour = Vec3(0, 0, 0)
 		for s in range(0, no_of_samples):
 			ray = camera.getRay(x, y)
-			colour = colour + rayTrace(spheres, ray, 5)
+			colour = colour + rayTrace(hitable_list, ray, 5)
 		pixels.append(colour/no_of_samples * 255.0)
 
 print("Actual length:", len(pixels), "Expected Length:", width * height)
