@@ -2,8 +2,9 @@ from vec3 import Vec3
 from ray import Ray
 from math import sqrt
 from hit_record import Hit_Record
+from hitable import Hitable
 
-class Sphere:
+class Sphere(Hitable):
 	def __init__(self, center = Vec3(0, 0, 0), radius = 0):
 		self.center = center
 		self.radius = radius
