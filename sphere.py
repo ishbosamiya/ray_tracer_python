@@ -3,11 +3,13 @@ from ray import Ray
 from math import sqrt
 from hit_record import Hit_Record
 from hitable import Hitable
+from material import *
 
 class Sphere(Hitable):
-	def __init__(self, center = Vec3(0, 0, 0), radius = 0):
+	def __init__(self, center = Vec3(0, 0, 0), radius = 0, material = Lambert()):
 		self.center = center
 		self.radius = radius
+		self.material = material
 	
 	def hit(self, ray_in, t_min, t_max):
 		a = ray_in.getDirection().dot(ray_in.getDirection())
@@ -23,6 +25,7 @@ class Sphere(Hitable):
 				hit_record.point = ray_in.pointAtParameter(t1)
 				hit_record.normal = (hit_record.point - self.center).normalized()
 				hit_record.t = t1
+				hit_record.material = self.material
 				return (True, hit_record)
 			t2 = (- b + sqrt(d)) / (2.0 * a)
 			if t2 > t_min and t2 < t_max:
@@ -30,5 +33,6 @@ class Sphere(Hitable):
 				hit_record.point = ray_in.pointAtParameter(t2)
 				hit_record.normal = (hit_record.point - self.center).normalized()
 				hit_record.t = t2
+				hit_record.material = self.material
 				return (True, hit_record)
 		return (False, hit_record)

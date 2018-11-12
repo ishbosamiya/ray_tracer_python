@@ -6,6 +6,7 @@ from camera import Camera
 from hitable import Hitable
 from hitable_list import Hitable_List
 from sphere import Sphere
+from material import *
 
 from math import sqrt
 from random import random
@@ -17,25 +18,17 @@ def backgroundColour(ray):
 	blue = Vec3(0.47, 0.7, 1.0)
 	return blue * h + white * (1.0 - h)
 
-def randomInUnitSphere():
-	temp = Vec3(random(), random(), random())
-	while temp.length() > 1:
-		temp = Vec3(random(), random(), random())
-	return temp
-
 def rayTrace(models, ray, depth):
 	if depth == 0:
 		return backgroundColour(ray)
 	colour = Vec3()
-	temp = models.hit(ray, 0.0001, 1000.0)
-	if temp[0]:
-		def reflection(incident_direction, normal):
-			return incident_direction - normal * (2 * incident_direction.dot(normal))
-		diffuse_colour = Vec3(0.8, 0.2, 0.2)
-		next_ray = Ray(temp[1].point, (temp[1].normal + randomInUnitSphere()).normalized())
-#		next_ray = Ray(temp[1].point, reflection(ray.getDirection(), temp[1].normal))
-		colour = rayTrace(models, next_ray, depth - 1)
-		colour = Vec3(colour.x * diffuse_colour.x, colour.y * diffuse_colour.y, colour.z * diffuse_colour.z)
+	ray_info = models.hit(ray, 0.0001, 1000.0)
+	if ray_info[0]:
+		material_info = ray_info[1].material.scattered(ray, ray_info[1])
+		if material_info[0]:
+			colour = rayTrace(models, material_info[1], depth - 1)
+			diffuse_colour = material_info[2]
+			colour = Vec3(colour.x * diffuse_colour.x, colour.y * diffuse_colour.y, colour.z * diffuse_colour.z)
 	else:
 		colour = backgroundColour(ray)
 	return colour
@@ -45,7 +38,7 @@ height = 200
 no_of_samples = 10
 
 pixels = []
-spheres = [Sphere(Vec3(-0.60, 0.0, 2.0), 0.5), Sphere(Vec3(0.40, 0.0, 2.0), 0.5), Sphere(Vec3(0.5, -100.0, 2.0), 99.5)]
+spheres = [Sphere(Vec3(-0.60, 0.0, 2.0), 0.5, Lambert(Vec3(0.89, 0.65, 0.55))), Sphere(Vec3(0.40, 0.0, 2.0), 0.5, Lambert(Vec3(0.2, 0.9, 0.55))), Sphere(Vec3(0.5, -100.0, 2.0), 99.5, Lambert(Vec3(1.0, 1.0, 1.0)))]
 hitable_list = Hitable_List(spheres)
 
 camera_origin = Vec3(0.0, 0.0, 0.0)
