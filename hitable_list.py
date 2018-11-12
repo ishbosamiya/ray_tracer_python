@@ -18,4 +18,4 @@ class Hitable_List(Hitable):
 				hit_anything = True;
 				closest_so_far = temp[1].t;
 				record = temp[1];
-		return (hit_anything, record);
+		return (hit_anything, record)
