@@ -1,6 +1,6 @@
 from vec3 import Vec3
 from ray import Ray
-from material import Material
+from material import Material, Lambert
 
 class Hit_Record:
 	ray_in = Ray()
