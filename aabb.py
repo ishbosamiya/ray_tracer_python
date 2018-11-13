@@ -7,7 +7,7 @@ def ffmin(a, b):
 	else:
 		return b
 
-def ffmax(a, b)"
+def ffmax(a, b):
 	if a > b:
 		return a
 	else:
@@ -18,18 +18,18 @@ class AABB:
 		self.m_min = m_min
 		self.m_max = m_max
 
-	def getMin():
+	def getMin(self):
 		return self.m_min
-	def getMax():
+	def getMax(self):
 		return self.m_max
 
 	def hit(self, ray_in, t_min, t_max):
 		for i in range(0, 3):
 			inv_ray_direction = 1.0/ray_in.getDirection()[i]
-			t0 = ffmin((getMin()[i] - ray_in.getOrigin()[i])*inv_ray_direction,
-						(getMax()[i] - ray_in.getOrigin()[i])*inv_ray_direction)
-			t1 = ffmax((getMin()[i] - ray_in.getOrigin()[i])*inv_ray_direction,
-						(getMax()[i] - ray_in.getOrigin()[i])*inv_ray_direction)
+			t0 = ffmin((self.getMin()[i] - ray_in.getOrigin()[i])*inv_ray_direction,
+						(self.getMax()[i] - ray_in.getOrigin()[i])*inv_ray_direction)
+			t1 = ffmax((self.getMin()[i] - ray_in.getOrigin()[i])*inv_ray_direction,
+						(self.getMax()[i] - ray_in.getOrigin()[i])*inv_ray_direction)
 			t_min = ffmax(t0, t_min)
 			t_max = ffmin(t1, t_max)
 			if t_max <= t_min:

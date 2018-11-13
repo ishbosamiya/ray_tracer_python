@@ -38,6 +38,6 @@ class Sphere(Hitable):
 				return (True, hit_record)
 		return (False, hit_record)
 
-	def boundingBox(time0, time1):
-		box = AABB(self.center - Vec3(radius, radius, radius), center + Vec3(radius, radius, radius))
+	def boundingBox(self, time0, time1):
+		box = AABB(self.center - Vec3(self.radius, self.radius, self.radius), self.center + Vec3(self.radius, self.radius, self.radius))
 		return (True, box)
