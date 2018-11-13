@@ -7,6 +7,7 @@ from hitable import Hitable
 from hitable_list import Hitable_List
 from sphere import Sphere
 from material import *
+from completion_bar import Completion_Bar
 
 from math import sqrt
 from random import random
@@ -35,7 +36,7 @@ def rayTrace(models, ray, depth):
 
 width = 300
 height = 200
-no_of_samples = 10
+no_of_samples = 1
 
 pixels = []
 spheres = [Sphere(Vec3(-0.60, 0.0, 2.0), 0.5, Metal(Vec3(0.89, 0.65, 0.55), 0.7)), Sphere(Vec3(0.40, 0.0, 2.0), 0.5, Metal(Vec3(0.2, 0.9, 0.55))), Sphere(Vec3(0.5, -100.0, 2.0), 99.5, Lambert(Vec3(1.0, 1.0, 1.0)))]
@@ -45,12 +46,15 @@ camera_origin = Vec3(0.0, 0.0, 0.0)
 camera_length = 1.0
 camera = Camera(width, height, camera_origin, camera_length)
 
+completion_bar = Completion_Bar(width * height * no_of_samples)
+
 for y in range(height, 0, -1):
 	for x in range(0, width):
 		colour = Vec3(0, 0, 0)
 		for s in range(0, no_of_samples):
 			ray = camera.getRay(x, y)
 			colour = colour + rayTrace(hitable_list, ray, 5)
+			completion_bar.update()
 		pixels.append(colour/no_of_samples * 255.0)
 
 print("Actual length:", len(pixels), "Expected Length:", width * height)
