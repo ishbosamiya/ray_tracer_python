@@ -8,6 +8,13 @@ class Vec3:
 
 	def __str__(self):
 		return "(" + str(self.x) + ", " + str(self.y) + ", " + str(self.z) + ")"
+	def __getitem__(self, i):
+		if i == 0:
+			return self.x
+		elif i == 1:
+			return self.y
+		elif i == 2:
+			return self.z
 
 	def __add__(self, v3):
 		return Vec3(self.x + v3.x, self.y + v3.y, self.z + v3.z)
