@@ -26,12 +26,12 @@ class AABB:
 	def hit(self, ray_in, t_min, t_max):
 		for i in range(0, 3):
 			inv_ray_direction = 1.0/ray_in.getDirection()[i]
-			t0 = ffmin((self.getMin()[i] - ray_in.getOrigin()[i])*inv_ray_direction,
+			t0 = min((self.getMin()[i] - ray_in.getOrigin()[i])*inv_ray_direction,
 						(self.getMax()[i] - ray_in.getOrigin()[i])*inv_ray_direction)
-			t1 = ffmax((self.getMin()[i] - ray_in.getOrigin()[i])*inv_ray_direction,
+			t1 = max((self.getMin()[i] - ray_in.getOrigin()[i])*inv_ray_direction,
 						(self.getMax()[i] - ray_in.getOrigin()[i])*inv_ray_direction)
-			t_min = ffmax(t0, t_min)
-			t_max = ffmin(t1, t_max)
+			t_min = max(t0, t_min)
+			t_max = min(t1, t_max)
 			if t_max <= t_min:
 				return (False,)
 		return (True,)
