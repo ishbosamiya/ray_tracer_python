@@ -11,6 +11,7 @@ class Sphere(Hitable):
 		self.center = center
 		self.radius = radius
 		self.material = material
+		self.box = AABB(self.center - Vec3(self.radius, self.radius, self.radius), self.center + Vec3(self.radius, self.radius, self.radius))
 	
 	def hit(self, ray_in, t_min, t_max):
 		a = ray_in.getDirection().dot(ray_in.getDirection())
@@ -39,5 +40,4 @@ class Sphere(Hitable):
 		return (False, hit_record)
 
 	def boundingBox(self, time0, time1):
-		box = AABB(self.center - Vec3(self.radius, self.radius, self.radius), self.center + Vec3(self.radius, self.radius, self.radius))
-		return (True, box)
+		return (True, self.box)
