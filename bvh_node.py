@@ -41,7 +41,7 @@ class BVH_Node(Hitable):
 	right = Hitable()
 	box = AABB()
 
-	def __init__(self, hitable_list, time0, time1):
+	def __init__(self, hitable_list, size, time0, time1):
 		axis = 3 * random()
 		if axis == 0:
 			sorted(hitable_list, key = cmp_to_key(boxXCompare))
@@ -50,17 +50,15 @@ class BVH_Node(Hitable):
 		else:
 			sorted(hitable_list, key = cmp_to_key(boxZCompare))
 
-		if len(hitable_list) == 1:
+		if size == 1:
 			self.left = hitable_list[0]
 			self.right = hitable_list[0]
-		elif len(hitable_list) == 2:
+		elif size == 2:
 			self.left = hitable_list[0]
 			self.right = hitable_list[1]
 		else:
-			size = len(hitable_list)
-			size_by_2 = int(len(hitable_list)/2)
-			self.left = BVH_Node(hitable_list[0:size_by_2], time0, time1)
-			self.right = BVH_Node(hitable_list[size_by_2:(size - size_by_2)], time0, time1)
+			self.left = BVH_Node(hitable_list, int(size/2), time0, time1)
+			self.right = BVH_Node(hitable_list[int(size/2):], size - int(size/2), time0, time1)
 
 		box_left = self.left.boundingBox(time0, time1)
 		box_right = self.right.boundingBox(time0, time1)
@@ -78,6 +76,7 @@ class BVH_Node(Hitable):
 					hit_record = left_record[1]
 				else:
 					hit_record = right_record[1]
+				return (True, hit_record)
 			elif left_record[0]:
 				hit_record = left_record[1]
 				return (True, hit_record)

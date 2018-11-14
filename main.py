@@ -35,13 +35,16 @@ def rayTrace(models, ray, depth):
 		colour = backgroundColour(ray)
 	return colour
 
-width = 300*3
-height = 200*3
+width = int(300)
+height = int(200)
 no_of_samples = 1
 
 pixels = []
-spheres = [Sphere(Vec3(-0.60, 0.0, 2.0), 0.5, Metal(Vec3(0.89, 0.65, 0.55), 0.7)), Sphere(Vec3(0.40, 0.0, 2.0), 0.5, Metal(Vec3(0.2, 0.9, 0.55))), Sphere(Vec3(0.5, -100.0, 2.0), 99.5, Lambert(Vec3(1.0, 1.0, 1.0)))]
-hitable_list = BVH_Node(spheres, 0.0, 0.0)
+spheres = [Sphere(Vec3(-1.30, 0.0, 2.0), 0.5, Metal(Vec3(0.89, 0.65, 0.55), 0.7)),
+			Sphere(Vec3(-0.60, 0.0, 2.0), 0.5, Metal(Vec3(0.89, 0.65, 0.55), 0.7)),
+			Sphere(Vec3(0.40, 0.0, 2.0), 0.5, Metal(Vec3(0.2, 0.9, 0.55), 0.0)),
+			Sphere(Vec3(0.5, -100.0, 2.0), 99.5, Lambert(Vec3(1.0, 1.0, 1.0)))]
+hitable_list = BVH_Node(spheres, len(spheres), 0.0, 0.0)
 
 camera_origin = Vec3(0.0, 0.0, 0.0)
 camera_length = 1.0
