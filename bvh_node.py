@@ -68,7 +68,8 @@ class BVH_Node(Hitable):
 
 	def hit(self, ray_in, t_min, t_max):
 		hit_record = Hit_Record()
-		if self.box.hit(ray_in, t_min, t_max):
+		box_hit = self.box.hit(ray_in, t_min, t_max)
+		if box_hit[0]:
 			left_record = self.left.hit(ray_in, t_min, t_max)
 			right_record = self.right.hit(ray_in, t_min, t_max)
 			if left_record[0] and right_record[0]:
