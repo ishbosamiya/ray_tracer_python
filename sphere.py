@@ -4,6 +4,7 @@ from math import sqrt
 from hit_record import Hit_Record
 from hitable import Hitable
 from material import *
+from aabb import AABB
 
 class Sphere(Hitable):
 	def __init__(self, center = Vec3(0, 0, 0), radius = 0, material = Lambert()):
@@ -36,3 +37,7 @@ class Sphere(Hitable):
 				hit_record.material = self.material
 				return (True, hit_record)
 		return (False, hit_record)
+
+	def boundingBox(self, time0, time1):
+		box = AABB(self.center - Vec3(self.radius, self.radius, self.radius), self.center + Vec3(self.radius, self.radius, self.radius))
+		return (True, box)
