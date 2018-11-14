@@ -3,6 +3,7 @@ from ray import Ray
 from hit_record import Hit_Record
 from hitable import Hitable
 from material import *
+from aabb import AABB
 
 class Triangle(Hitable):
 	def __init__(self, v, vt = [], vn = [], material = Lambert()):
@@ -10,6 +11,17 @@ class Triangle(Hitable):
 		self.vt = vt
 		self.vn = vn
 		self.material = material
+
+		#calculating bounding box
+		minx = min([self.v[0].x, self.v[1].x, self.v[2].x])
+		miny = min([self.v[0].y, self.v[1].y, self.v[2].y])
+		minz = min([self.v[0].z, self.v[1].z, self.v[2].z])
+
+		maxx = max([self.v[0].x, self.v[1].x, self.v[2].x])
+		maxy = max([self.v[0].y, self.v[1].y, self.v[2].y])
+		maxz = max([self.v[0].z, self.v[1].z, self.v[2].z])
+
+		self.box = AABB(Vec3(minx, miny, minz), Vec3(maxx, maxy, maxz))
 	def hit(self, ray_in, t_min, t_max):
 		hit_record = Hit_Record()
 		edge1 = self.v[1] - self.v[0]
@@ -41,3 +53,6 @@ class Triangle(Hitable):
 			return (True, hit_record)
 		else:
 			return (False, hit_record)
+
+	def boundingBox(self, time0, time1):
+		return (True, self.box)

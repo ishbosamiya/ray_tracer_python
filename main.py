@@ -51,7 +51,7 @@ hitable_list = Hitable_List(spheres + triangles)
 model = Model(material = Metal(Vec3(0.8, 0.8, 0.82), 0.3))
 model.readObj("../temp_obj.obj")
 hitable_list = Hitable_List([model])
-hitable_list = BVH_Node(spheres, len(spheres), 0.0, 0.0)
+hitable_list = BVH_Node(spheres + triangles, len(spheres + triangles), 0.0, 0.0)
 
 camera_origin = Vec3(0.0, 0.0, -2.0)
 camera_length = 0.8
