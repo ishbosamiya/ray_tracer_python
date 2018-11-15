@@ -11,7 +11,7 @@ def boxXCompare(ah, bh):
 	box_right = bh.boundingBox(0.0, 0.0)
 	if not box_left[0] or not box_right[0]:
 		print("No bounding box in BVH_Node!")
-	if box_left[1].getMin().x - box_right[1].getMin().x < 0.0:
+	if box_left[1].m_min.x - box_right[1].m_min.x < 0.0:
 		return False
 	else:
 		return True
@@ -21,7 +21,7 @@ def boxYCompare(ah, bh):
 	box_right = bh.boundingBox(0.0, 0.0)
 	if not box_left[0] or not box_right[0]:
 		print("No bounding box in BVH_Node!")
-	if box_left[1].getMin().y - box_right[1].getMin().y < 0.0:
+	if box_left[1].m_min.y - box_right[1].m_min.y < 0.0:
 		return False
 	else:
 		return True
@@ -31,7 +31,7 @@ def boxZCompare(ah, bh):
 	box_right = bh.boundingBox(0.0, 0.0)
 	if not box_left[0] or not box_right[0]:
 		print("No bounding box in BVH_Node!")
-	if box_left[1].getMin().z - box_right[1].getMin().z < 0.0:
+	if box_left[1].m_min.z - box_right[1].m_min.z < 0.0:
 		return False
 	else:
 		return True
@@ -42,10 +42,10 @@ class BVH_Node(Hitable):
 	box = AABB()
 
 	def __init__(self, hitable_list, size, time0, time1):
-		axis = 3 * random()
+		axis = int(3 * random())
 		if axis == 0:
 			sorted(hitable_list, key = cmp_to_key(boxXCompare))
-		elif axis == 0:
+		elif axis == 1:
 			sorted(hitable_list, key = cmp_to_key(boxYCompare))
 		else:
 			sorted(hitable_list, key = cmp_to_key(boxZCompare))

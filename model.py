@@ -124,6 +124,7 @@ class Model(Hitable):
 			for triangle_no in range(0, len(vertices) - 2):
 				list_of_triangles.append(Triangle(v = [vertices[0], vertices[triangle_no + 1], vertices[triangle_no + 2]], material = self.material))
 		hitable_list = BVH_Node(list_of_triangles, len(list_of_triangles), 0.0, 0.0)
+#		hitable_list = Hitable_List(list_of_triangles)
 		return hitable_list.hit(ray_in, t_min, t_max)
 
 	def boundingBox(self, time0, time1):
