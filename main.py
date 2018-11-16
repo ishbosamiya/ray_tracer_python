@@ -15,6 +15,28 @@ from math import sqrt
 from random import random
 from time import time
 
+def randomScene(no_of_spheres):
+	materials = []
+	spheres = []
+	for i in range(0, no_of_spheres):
+		temp = int(random() * 2)
+		if temp == 0:
+			materials.append(Lambert(Vec3(random(), random(), random())))
+		elif temp == 1:
+			materials.append(Metal(Vec3(random(), random(), random()), random() * 0.7))
+	for i in range(0, no_of_spheres):
+		world_space = 1.0
+		min_radius = 0.35
+		max_radius = 0.5
+		x = (random() * 2 - 1) * world_space
+		y = (random() * 2 - 1) * world_space * 0.1
+		z = (random() * 2 - 1) * world_space
+		r = random() * max_radius
+		print(x, y, z, r)
+		spheres.append(Sphere(Vec3(x, y, z), r, materials[i]))
+	print(len(spheres))
+	return spheres
+
 def backgroundColour(ray):
 	h = ray.getDirection().y
 	h = (h + 1.0)/2.0
@@ -37,22 +59,24 @@ def rayTrace(models, ray, depth):
 		colour = backgroundColour(ray)
 	return colour
 
-width = int(300)
-height = int(200)
+width = int(1280 * 0.2)
+height = int(720 * 0.2)
 no_of_samples = 1
 
 pixels = []
 triangles = [Triangle(v = [Vec3(0.0, 1.0, 2.0), Vec3(1.0, -5.0, 5.0), Vec3(-1.0, -5.0, 0.0)], material = Lambert(Vec3(0.1, 0.2, 0.8)))]
-spheres = [Sphere(Vec3(-1.30, 0.0, 2.0), 0.5, Metal(Vec3(0.89, 0.65, 0.55), 0.7)),
+spheres = [Sphere(Vec3(-1.70, 0.0, 2.0), 0.5, Lambert(Vec3(0.99, 0.99, 0.99))),
 			Sphere(Vec3(-0.60, 0.0, 2.0), 0.5, Metal(Vec3(0.89, 0.65, 0.55), 0.7)),
 			Sphere(Vec3(0.40, 0.0, 2.0), 0.5, Metal(Vec3(0.2, 0.9, 0.55), 0.0)),
 			Sphere(Vec3(0.5, -100.0, 2.0), 99.5, Lambert(Vec3(1.0, 1.0, 1.0)))]
-hitable_list = Hitable_List(spheres + triangles)
+#hitable_list = Hitable_List(spheres + triangles)
 model = Model(material = Metal(Vec3(0.8, 0.8, 0.82), 0.3))
 model.readObj("../temp_obj.obj")
 #hitable_list = Hitable_List(spheres)
+#hitable_list = Hitable_List([model])
+hitable_list = Hitable_List(randomScene(20))
+
 time_start = time()
-hitable_list = Hitable_List([model])
 
 camera_origin = Vec3(0.0, 0.0, -2.0)
 camera_length = 0.8
