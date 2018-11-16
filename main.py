@@ -82,7 +82,7 @@ camera_origin = Vec3(0.0, 0.0, -2.0)
 camera_length = 0.8
 camera = Camera(width, height, camera_origin, camera_length)
 
-completion_bar = Completion_Bar(width * height * no_of_samples)
+completion_bar = Completion_Bar(width * height * no_of_samples, 60)
 
 for y in range(height, 0, -1):
 	for x in range(0, width):
