@@ -4,14 +4,12 @@ from math import sqrt
 from hit_record import Hit_Record
 from hitable import Hitable
 from material import *
-from aabb import AABB
 
 class Sphere(Hitable):
 	def __init__(self, center = Vec3(0, 0, 0), radius = 0, material = Lambert()):
 		self.center = center
 		self.radius = radius
 		self.material = material
-		self.box = AABB(self.center - Vec3(self.radius, self.radius, self.radius), self.center + Vec3(self.radius, self.radius, self.radius))
 	
 	def hit(self, ray_in, t_min, t_max):
 		a = ray_in.getDirection().dot(ray_in.getDirection())
@@ -38,6 +36,3 @@ class Sphere(Hitable):
 				hit_record.material = self.material
 				return (True, hit_record)
 		return (False, hit_record)
-
-	def boundingBox(self, time0, time1):
-		return (True, self.box)

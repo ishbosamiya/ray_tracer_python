@@ -3,8 +3,6 @@ from triangle import Triangle
 from hitable import Hitable
 from hitable_list import Hitable_List
 from material import *
-from aabb import AABB
-from bvh_node import BVH_Node
 
 class Model(Hitable):
 	name = ""
@@ -55,14 +53,6 @@ class Model(Hitable):
 					self.name = info[1]
 				else:
 					continue
-
-		minx = min([self.vertices[i][0] for i in range(0, len(self.vertices))])
-		miny = min([self.vertices[i][1] for i in range(0, len(self.vertices))])
-		minz = min([self.vertices[i][2] for i in range(0, len(self.vertices))])
-		maxx = max([self.vertices[i][0] for i in range(0, len(self.vertices))])
-		maxy = max([self.vertices[i][1] for i in range(0, len(self.vertices))])
-		maxz = max([self.vertices[i][2] for i in range(0, len(self.vertices))])
-		self.box = AABB(Vec3(minx, miny, minz), Vec3(maxx, maxy, maxz))
 
 	def writeObj(self, path):
 		with open(path, "wt") as file:
@@ -123,9 +113,5 @@ class Model(Hitable):
 			vertices = self.getFaceData(self.faces.index(face))
 			for triangle_no in range(0, len(vertices) - 2):
 				list_of_triangles.append(Triangle(v = [vertices[0], vertices[triangle_no + 1], vertices[triangle_no + 2]], material = self.material))
-		hitable_list = BVH_Node(list_of_triangles, len(list_of_triangles), 0.0, 0.0)
-#		hitable_list = Hitable_List(list_of_triangles)
+		hitable_list = Hitable_List(list_of_triangles)
 		return hitable_list.hit(ray_in, t_min, t_max)
-
-	def boundingBox(self, time0, time1):
-		return (True, self.box)
