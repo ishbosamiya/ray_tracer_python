@@ -1,3 +1,5 @@
+from time import time
+
 class Completion_Bar:
 	current_value = 1
 	def __init__(self, max_value):
@@ -10,6 +12,13 @@ class Completion_Bar:
 			print("#", end = "")
 		for i in range(int(d * width), width):
 			print("-", end = "")
+		print(" %2f" % (Completion_Bar.time_lapse(d)/100000000.0), end = " ")
 		if self.current_value >= self.max_value:
 			print()
 		self.current_value += 1
+	def time_lapse(d):
+		start_time=time()
+		current_time=time()
+		end_time=(1*current_time)/d
+		time_remaining=end_time-current_time
+		return time_remaining
