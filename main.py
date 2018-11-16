@@ -12,10 +12,10 @@ from material import *
 from completion_bar import Completion_Bar
 
 from math import sqrt
-from random import random
+from random import random, uniform
 from time import time
 
-def randomScene(no_of_spheres):
+def randomScene(no_of_spheres, world_space = 3.0, min_radius = 0.35, max_radius = 0.5):
 	materials = []
 	spheres = []
 	for i in range(0, no_of_spheres):
@@ -25,13 +25,10 @@ def randomScene(no_of_spheres):
 		elif temp == 1:
 			materials.append(Metal(Vec3(random(), random(), random()), random() * 0.7))
 	for i in range(0, no_of_spheres):
-		world_space = 1.0
-		min_radius = 0.35
-		max_radius = 0.5
 		x = (random() * 2 - 1) * world_space
-		y = (random() * 2 - 1) * world_space * 0.1
+		y = (random() * 2 - 1) * world_space * 0.4
 		z = (random() * 2 - 1) * world_space
-		r = random() * max_radius
+		r = uniform(min_radius, max_radius)
 		print(x, y, z, r)
 		spheres.append(Sphere(Vec3(x, y, z), r, materials[i]))
 	print(len(spheres))
@@ -74,7 +71,7 @@ model = Model(material = Metal(Vec3(0.8, 0.8, 0.82), 0.3))
 model.readObj("../temp_obj.obj")
 #hitable_list = Hitable_List(spheres)
 #hitable_list = Hitable_List([model])
-hitable_list = Hitable_List(randomScene(20))
+hitable_list = Hitable_List(randomScene(50, 4.0, 0.35, 0.4))
 
 time_start = time()
 
